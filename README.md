@@ -32,13 +32,19 @@ python -m http.server 8765
 
 ## 部署
 
-推送到 `main` 后由 `.github/workflows/pages.yml` 部署到 GitHub Pages。
-
-仓库需要设置：
+推送到 `main` 后，在仓库设置：
 
 ```text
 Settings → Pages
-Source: GitHub Actions
+→ Deploy from a branch
+→ Branch: main
+→ Folder: / (root)
+→ Save
+```
+
+自定义域名：
+
+```text
 Custom domain: www.dytes.cn
 ```
 
