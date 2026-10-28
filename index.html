@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dytes · AI 设计插件包管理工具</title>
+  <meta name="description" content="dytes 是面向设计软件的 AI 插件包管理工具，统一安装、更新和发布设计插件、设计软件与模型。">
+  <meta name="theme-color" content="#0b0f14">
+  <link rel="canonical" href="https://www.dytes.cn/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="dytes">
+  <meta property="og:title" content="dytes · AI 设计插件包管理工具">
+  <meta property="og:description" content="统一管理设计插件、设计软件与模型包。">
+  <meta property="og:url" content="https://www.dytes.cn/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0f14'/%3E%3Cpath d='M20 18h12c10 0 16 5.6 16 14s-6 14-16 14H20V18zm10 8v12h2c5 0 8-2.3 8-6s-3-6-8-6h-2z' fill='%2370ffaf'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./assets/css/site.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="dytes 首页">
+      <span class="brand-mark">d</span>
+      <span>dytes</span>
+    </a>
+    <nav class="site-nav" aria-label="主导航">
+      <a href="#download">下载</a>
+      <a href="#features">能力</a>
+      <a href="#piksel">Piksel</a>
+      <a href="https://github.com/dytescn/dytes/tree/main/docs">文档</a>
+      <a href="https://github.com/dytescn">GitHub</a>
+      <a class="nav-cta" href="https://github.com/dytescn/dytes/releases/latest">Releases</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-badge">AI design package manager</div>
+      <h1>管理设计插件，<span>像管理代码一样。</span></h1>
+      <p class="hero-copy">
+        dytes 是面向设计软件的 AI 插件包管理工具。
+        统一安装、更新与发布设计插件、设计软件、Web 能力与模型包。
+      </p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="#download">开始安装</a>
+        <a class="button button-ghost" href="https://github.com/dytescn">查看 GitHub</a>
+      </div>
+      <p class="release-line">
+        最新版本 <strong data-release-version>latest</strong>
+        <span class="dot">·</span>
+        <a data-release-link href="https://github.com/dytescn/dytes/releases/latest">Release notes</a>
+      </p>
+    </section>
+
+    <section class="download-section" id="download">
+      <div class="section-heading">
+        <p class="eyebrow">Install</p>
+        <h2>一条命令，开始使用 dytes</h2>
+        <p>选择平台，复制安装命令。也可以直接下载对应平台的二进制。</p>
+      </div>
+
+      <div class="install-card">
+        <div class="install-tabs" role="tablist" aria-label="安装平台">
+          <button type="button" role="tab" aria-selected="true" data-tab="unix">macOS / Linux</button>
+          <button type="button" role="tab" aria-selected="false" data-tab="windows">Windows</button>
+        </div>
+        <div class="install-command">
+          <pre><code data-command="unix"><span class="prompt">$</span> curl -fsSL https://www.dytes.cn/install.sh | sh</code><code data-command="windows" hidden><span class="prompt">&gt;</span> irm https://www.dytes.cn/install.ps1 | iex</code></pre>
+          <button class="copy-button" type="button" data-copy>复制</button>
+        </div>
+        <div class="install-meta">
+          <span data-install-hint>安装到 <code>~/.local/bin</code></span>
+          <span class="install-links">
+            <a href="https://github.com/dytescn/dytes/releases/latest/download/dytes-macos">macOS</a>
+            <a href="https://github.com/dytescn/dytes/releases/latest/download/dytes-linux">Linux</a>
+            <a href="https://github.com/dytescn/dytes/releases/latest/download/dytes-windows.exe">Windows</a>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="features" id="features">
+      <div class="section-heading">
+        <p class="eyebrow">Why dytes</p>
+        <h2>为设计团队准备的包管理器</h2>
+      </div>
+      <div class="feature-grid">
+        <article class="feature-card">
+          <span class="feature-icon">01</span>
+          <h3>插件与能力包</h3>
+          <p>统一管理设计插件、设计软件、Web 能力、系统库与模型包。</p>
+        </article>
+        <article class="feature-card">
+          <span class="feature-icon">02</span>
+          <h3>版本与依赖</h3>
+          <p>用 <code>dytes.json</code> 声明依赖，用 <code>dytes.lock</code> 固定版本。</p>
+        </article>
+        <article class="feature-card">
+          <span class="feature-icon">03</span>
+          <h3>一条命令更新</h3>
+          <p><code>dytes update</code> 检查并安装更新，支持离线、检查和初始化脚本。</p>
+        </article>
+        <article class="feature-card">
+          <span class="feature-icon">04</span>
+          <h3>发布到对象存储</h3>
+          <p><code>dytes publish</code> 上传产物、清单与索引，保持发布可追溯。</p>
+        </article>
+        <article class="feature-card">
+          <span class="feature-icon">05</span>
+          <h3>多平台</h3>
+          <p>Windows、Linux、macOS 使用同一套包模型与命令。</p>
+        </article>
+        <article class="feature-card">
+          <span class="feature-icon">06</span>
+          <h3>AI 设计生态</h3>
+          <p>连接插件、素材、工作区与对话能力，为设计工作流提供基础。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="quickstart">
+      <div class="section-heading">
+        <p class="eyebrow">Quick start</p>
+        <h2>从清单开始</h2>
+        <p>把包声明写进 <code>dytes.json</code>，剩下的交给 dytes。</p>
+      </div>
+      <div class="quickstart-grid">
+        <div class="code-card">
+          <div class="code-card-head">
+            <span>初始化一个设计插件包</span>
+            <span class="code-lang">shell</span>
+          </div>
+          <pre><code><span class="prompt">$</span> dytes init --type design_plugins --name my_plugin
+<span class="prompt">$</span> dytes publish --dry-run
+<span class="prompt">$</span> dytes publish</code></pre>
+        </div>
+        <div class="quickstart-copy">
+          <h3>已经安装？</h3>
+          <p>检查更新，或查看当前版本与配置。</p>
+          <pre><code><span class="prompt">$</span> dytes --version
+<span class="prompt">$</span> dytes update --check
+<span class="prompt">$</span> dytes update</code></pre>
+          <a class="text-link" href="https://github.com/dytescn/dytes/tree/main/docs">阅读完整文档 →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="piksel" id="piksel">
+      <div class="piksel-panel">
+        <div class="piksel-copy">
+          <p class="eyebrow">Product</p>
+          <h2>从 dytes 到 Piksel</h2>
+          <p>
+            dytes 是包管理器，Piksel 是客户实际打开的设计协作产品。
+            三步完成安装与首次更新。
+          </p>
+          <ol class="steps">
+            <li>
+              <span class="step-index">1</span>
+              <div>
+                <strong>安装 dytes</strong>
+                <p>把包管理器装到本机。</p>
+              </div>
+            </li>
+            <li>
+              <span class="step-index">2</span>
+              <div>
+                <strong>同步 Piksel 清单</strong>
+                <p>下载 Piksel 的 <code>dytes.json</code> 到工作目录。</p>
+              </div>
+            </li>
+            <li>
+              <span class="step-index">3</span>
+              <div>
+                <strong>执行 dytes update</strong>
+                <p>dytes 会下载并安装 Piksel 及其依赖。</p>
+              </div>
+            </li>
+          </ol>
+          <a class="button button-ghost" href="https://github.com/dytescn/Piksel">查看 Piksel</a>
+        </div>
+        <div class="piksel-terminal">
+          <div class="terminal-head">macOS / Linux</div>
+          <pre><code><span class="prompt">$</span> curl -fsSL https://www.dytes.cn/install.sh | sh
+
+<span class="prompt">$</span> mkdir -p piksel &amp;&amp; cd piksel
+<span class="prompt">$</span> curl -fsSL https://raw.githubusercontent.com/dytescn/Piksel/main/dytes.json -o dytes.json
+
+<span class="prompt">$</span> dytes update</code></pre>
+          <div class="terminal-head terminal-head-second">Windows PowerShell</div>
+          <pre><code><span class="prompt">&gt;</span> irm https://www.dytes.cn/install.ps1 | iex
+<span class="prompt">&gt;</span> mkdir piksel; cd piksel
+<span class="prompt">&gt;</span> irm https://raw.githubusercontent.com/dytescn/Piksel/main/dytes.json -OutFile dytes.json
+<span class="prompt">&gt;</span> dytes update</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="ecosystem" id="ecosystem">
+      <div class="section-heading">
+        <p class="eyebrow">Ecosystem</p>
+        <h2>设计软件相关的开源能力</h2>
+      </div>
+      <div class="ecosystem-list">
+        <a href="https://github.com/dytescn/dytes" class="ecosystem-item">
+          <strong>dytes</strong>
+          <span>安装、更新、发布与清单管理</span>
+        </a>
+        <a href="https://github.com/dytescn/designplugin_lib" class="ecosystem-item">
+          <strong>designplugin_lib</strong>
+          <span>设计插件能力库</span>
+        </a>
+        <a href="https://github.com/dytescn/material_lib" class="ecosystem-item">
+          <strong>material_lib</strong>
+          <span>设计素材与内容检索</span>
+        </a>
+        <a href="https://github.com/dytescn/workspace_lib" class="ecosystem-item">
+          <strong>workspace_lib</strong>
+          <span>工作区与项目数据</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <span class="brand-mark">d</span>
+      <strong>dytes</strong>
+    </div>
+    <p>AI 设计插件包管理工具</p>
+    <div class="footer-links">
+      <a href="https://www.dytes.cn">www.dytes.cn</a>
+      <a href="https://github.com/dytescn">GitHub</a>
+      <a href="https://github.com/dytescn/dytes/releases/latest">Release</a>
+      <a href="https://github.com/dytescn/dytes/blob/main/LICENSE">MIT License</a>
+    </div>
+    <p class="copyright">© 2026 dytescn</p>
+  </footer>
+
+  <script src="./assets/js/site.js" defer></script>
+</body>
+</html>
