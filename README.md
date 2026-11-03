@@ -62,15 +62,14 @@ www.dytes.cn  CNAME  dytescn.github.io
     由 `dytes` release workflow 在发布时生成；
   - 同时读取本仓库 `assets/data/release.json`，两者取较高版本，
     避免 CDN 缓存导致页面回退到旧版本；
-- 版本同步（发布后）：`dytes` 发布 workflow 在自检通过后向本仓库发送
+- 版本同步（可选）：`dytes` 发布 workflow 会在自检通过后向本仓库发送
   `repository_dispatch`（`dytes-release`），由
   [`.github/workflows/sync-release.yml`](.github/workflows/sync-release.yml)
-  更新 `assets/data/release.json` 并提交，触发 Pages 重新部署；
-- 自动同步需要在 `dytescn/dytes` 仓库配置 secret `WEBSITE_DISPATCH_TOKEN`
-  （具备本仓库 contents 写权限的 fine-grained PAT）。未配置时仍可在
-  Actions 中手动运行 **Sync dytes release**；
+  更新 `assets/data/release.json`。配置 secret `WEBSITE_DISPATCH_TOKEN`
+  （具备本仓库 contents 写权限的 fine-grained PAT）即可启用；
+  未配置时官网仍会从 `version.js` 读取最新版本，也可在 Actions 中手动运行
+  **Sync dytes release**；
 - 安装脚本：`install.sh` / `install.ps1` 从 packages 域名下载，并校验同名 `.sha256`；
 - 不再使用 GitHub Release 作为二进制下载源。
 
-`dytes` 每次发布后需检查上述地址与官网三个平台下载按钮，清单见
-`dytes_sys_operations/sysinfo/app/publish.md` §6.1。
+`dytes` 每次发布后如需确认，检查上述地址与官网三个平台下载按钮即可。
