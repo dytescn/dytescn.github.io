@@ -1,0 +1,103 @@
+name: Sync dytes release
+
+# dytes 发布 workflow 在 verify-release 通过后触发本 workflow。
+# 也可以手动触发：Actions → Sync dytes release → Run workflow。
+
+on:
+  repository_dispatch:
+    types: [dytes-release]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "要同步的版本（留空则读取 dytes 最新 Release）"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-dytes-release
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Update release.json
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Resolve release version
+        id: release
+        shell: bash
+        env:
+          PAYLOAD_VERSION: ${{ github.event.client_payload.version }}
+          INPUT_VERSION: ${{ inputs.version }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          version="${INPUT_VERSION:-${PAYLOAD_VERSION:-}}"
+
+          if [ -z "$version" ]; then
+            echo "从 GitHub Release 读取最新版本..."
+            for attempt in $(seq 1 10); do
+              version=$(curl -fsS \
+                -H "Authorization: Bearer $GITHUB_TOKEN" \
+                -H "Accept: application/vnd.github+json" \
+                "https://api.github.com/repos/dytescn/dytes/releases/latest" \
+                | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{const j=JSON.parse(s);console.log((j.tag_name||"").replace(/^v/,""))}catch{console.log("")}})' || true)
+              if [ -n "$version" ]; then break; fi
+              echo "尚未读取到 Release，等待 ($attempt/10)"
+              sleep 15
+            done
+          fi
+
+          if [ -z "$version" ]; then
+            echo "::error::无法确定 dytes 版本，请在手动触发时填写 version。"
+            exit 1
+          fi
+
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "同步版本: $version"
+
+      - name: Write release.json
+        shell: bash
+        env:
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          set -euo pipefail
+          mkdir -p assets/data
+          node -e '
+            const fs = require("fs");
+            const base = "https://packages.funxdata.com/core/dytes/latest";
+            const release = {
+              version: process.env.VERSION,
+              downloads: {
+                windows: `${base}/windows/dytes.exe`,
+                linux: `${base}/linux/dytes`,
+                macos: `${base}/macos/dytes`,
+              },
+            };
+            fs.writeFileSync(
+              "assets/data/release.json",
+              JSON.stringify(release, null, 2) + "\n",
+            );
+          '
+          cat assets/data/release.json
+
+      - name: Commit and push
+        shell: bash
+        env:
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- assets/data/release.json; then
+            echo "release.json 已是 $VERSION，无需更新。"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/data/release.json
+          git commit -m "chore: 同步 dytes v$VERSION"
+          git push

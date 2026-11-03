@@ -1,0 +1,8 @@
+{
+  "version": "0.1.10",
+  "downloads": {
+    "windows": "https://packages.funxdata.com/core/dytes/latest/windows/dytes.exe",
+    "linux": "https://packages.funxdata.com/core/dytes/latest/linux/dytes",
+    "macos": "https://packages.funxdata.com/core/dytes/latest/macos/dytes"
+  }
+}

@@ -69,32 +69,92 @@ if (copyButton) {
   });
 }
 
-async function loadLatestRelease() {
-  try {
-    const response = await fetch(
-      "https://api.github.com/repos/dytescn/dytes/releases/latest",
-      { headers: { Accept: "application/vnd.github+json" } },
-    );
-
-    if (!response.ok) {
-      return;
-    }
-
-    const release = await response.json();
-    const version = release.tag_name || "latest";
-
-    document.querySelectorAll("[data-release-version]").forEach((node) => {
-      node.textContent = version;
-    });
-
-    document.querySelectorAll("[data-release-link]").forEach((node) => {
-      if (release.html_url) {
-        node.href = release.html_url;
-      }
-    });
-  } catch {
-    // 网络不可用时保留页面上的 latest 文本。
+function parseVersion(value) {
+  const match = /^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z.-]+))?$/.exec(
+    String(value || "").replace(/^v/, ""),
+  );
+  if (!match) {
+    return null;
   }
+  return {
+    major: Number(match[1]),
+    minor: Number(match[2]),
+    patch: Number(match[3]),
+    pre: match[4] || "",
+  };
+}
+
+function compareVersions(a, b) {
+  const left = parseVersion(a);
+  const right = parseVersion(b);
+  if (!left && !right) return 0;
+  if (!left) return -1;
+  if (!right) return 1;
+
+  for (const key of ["major", "minor", "patch"]) {
+    if (left[key] !== right[key]) {
+      return left[key] > right[key] ? 1 : -1;
+    }
+  }
+
+  if (left.pre === right.pre) return 0;
+  if (!left.pre) return 1;
+  if (!right.pre) return -1;
+  return left.pre.localeCompare(right.pre, "en", { numeric: true });
+}
+
+async function fetchStaticRelease() {
+  try {
+    const response = await fetch(`./assets/data/release.json?t=${Date.now()}`, {
+      cache: "no-store",
+    });
+    if (!response.ok) {
+      return null;
+    }
+    return await response.json();
+  } catch {
+    return null;
+  }
+}
+
+async function loadLatestRelease() {
+  // 静态 release.json 由 dytes 发布后的同步 workflow 更新；version.js 由
+  // dytes release workflow 直接上传到 packages 域名。两者取较高版本，避免
+  // CDN 缓存或同步 workflow 尚未运行时页面回退到旧版本。
+  const staticRelease = await fetchStaticRelease();
+  const runtimeRelease = window.DYTES_RELEASE;
+  const candidates = [staticRelease, runtimeRelease].filter(
+    (release) => release && release.version,
+  );
+
+  if (candidates.length === 0) {
+    return;
+  }
+
+  const newest = candidates.reduce((best, current) =>
+    compareVersions(current.version, best.version) > 0 ? current : best,
+  );
+  const version = `v${String(newest.version).replace(/^v/, "")}`;
+  const downloads = Object.assign(
+    {},
+    runtimeRelease && runtimeRelease.downloads,
+    staticRelease && staticRelease.downloads,
+  );
+
+  document.querySelectorAll("[data-release-version]").forEach((node) => {
+    node.textContent = version;
+  });
+
+  document.querySelectorAll("[data-release-link]").forEach((node) => {
+    node.href = `https://github.com/dytescn/dytes/releases/tag/${version}`;
+  });
+
+  document.querySelectorAll("[data-download]").forEach((node) => {
+    const url = downloads[node.dataset.download];
+    if (url) {
+      node.href = url;
+    }
+  });
 }
 
 loadLatestRelease();
