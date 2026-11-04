@@ -28,7 +28,7 @@ sha256_of() {
   fi
 }
 
-echo "Downloading dytes for $os from packages.funxdata.com..."
+echo "Downloading dytes for $os from packages.funxdata.com (~19 MB)..."
 attempt=1
 while [ "$attempt" -le 3 ]; do
   if curl -fL --retry 3 --retry-delay 2 --retry-connrefused \
@@ -45,16 +45,21 @@ if [ "$attempt" -gt 3 ]; then
   exit 1
 fi
 
-if curl -fsSL --max-time 30 "$url.sha256" -o "$checksum_tmp" 2>/dev/null; then
+if [ "${DYTES_SKIP_VERIFY:-0}" = "1" ]; then
+  echo "Warning: DYTES_SKIP_VERIFY=1, skipping SHA-256 verification" >&2
+else
+  if ! curl -fsSL --max-time 30 "$url.sha256" -o "$checksum_tmp" 2>/dev/null; then
+    echo "dytes: checksum unavailable: $url.sha256" >&2
+    echo "Set DYTES_SKIP_VERIFY=1 to install without verification (not recommended)." >&2
+    exit 1
+  fi
   expected="$(awk 'NR == 1 {print $1}' "$checksum_tmp")"
   actual="$(sha256_of "$tmp")"
-  if [ -n "$expected" ] && [ "$expected" != "$actual" ]; then
-    echo "dytes: SHA-256 mismatch (expected $expected, got $actual)" >&2
+  if [ -z "$expected" ] || [ "$expected" != "$actual" ]; then
+    echo "dytes: SHA-256 mismatch (expected ${expected:-<empty>}, got $actual)" >&2
     exit 1
   fi
   echo "SHA-256 verified"
-else
-  echo "Warning: checksum unavailable, skipping verification" >&2
 fi
 
 chmod +x "$tmp"

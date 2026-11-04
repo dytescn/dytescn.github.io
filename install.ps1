@@ -10,7 +10,7 @@ $checksum = "$target.download.sha256"
 New-Item -ItemType Directory -Force -Path $installDir | Out-Null
 
 try {
-    Write-Host "Downloading dytes for windows from packages.funxdata.com..."
+    Write-Host "Downloading dytes for windows from packages.funxdata.com (~19 MB)..."
     $downloaded = $false
     for ($attempt = 1; $attempt -le 3; $attempt++) {
         try {
@@ -26,17 +26,17 @@ try {
         throw "download failed after 3 attempts: $url"
     }
 
-    $checksumAvailable = $false
-    try {
-        Invoke-WebRequest -Uri "$url.sha256" -OutFile $checksum -UseBasicParsing
-        $checksumAvailable = $true
-    } catch {
-        Write-Warning "Checksum unavailable, skipping verification: $($_.Exception.Message)"
-    }
-    if ($checksumAvailable) {
+    if ($env:DYTES_SKIP_VERIFY -eq "1") {
+        Write-Warning "DYTES_SKIP_VERIFY=1, skipping SHA-256 verification"
+    } else {
+        try {
+            Invoke-WebRequest -Uri "$url.sha256" -OutFile $checksum -UseBasicParsing
+        } catch {
+            throw "Checksum unavailable: $url.sha256. Set DYTES_SKIP_VERIFY=1 to install without verification (not recommended)."
+        }
         $expected = ((Get-Content $checksum -TotalCount 1) -split '\s+')[0].ToLower()
         $actual = (Get-FileHash -Path $tmp -Algorithm SHA256).Hash.ToLower()
-        if ($expected -and $expected -ne $actual) {
+        if (-not $expected -or $expected -ne $actual) {
             throw "SHA-256 mismatch (expected $expected, got $actual)"
         }
         Write-Host "SHA-256 verified"
