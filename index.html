@@ -150,7 +150,7 @@
           <h2>从 dytes 到 Piksel</h2>
           <p>
             dytes 是包管理器，Piksel 是客户实际打开的设计协作产品。
-            三步完成安装与首次更新。
+            三步完成安装与首次启动。
           </p>
           <ol class="steps">
             <li>
@@ -163,15 +163,15 @@
             <li>
               <span class="step-index">2</span>
               <div>
-                <strong>同步 Piksel 清单</strong>
-                <p>下载 Piksel 的 <code>dytes.json</code> 到工作目录。</p>
+                <strong>运行图形安装器</strong>
+                <p>执行 <code>dytes install piksel --gui</code>，打开安装窗口。</p>
               </div>
             </li>
             <li>
               <span class="step-index">3</span>
               <div>
-                <strong>执行 dytes update --gui</strong>
-                <p>dytes 会打开图形更新窗口，下载并安装 Piksel 及其依赖。</p>
+                <strong>选择目录并安装</strong>
+                <p>图形安装器会下载并安装 Piksel 及其依赖。</p>
               </div>
             </li>
           </ol>
@@ -181,15 +181,10 @@
           <div class="terminal-head">macOS / Linux</div>
           <pre><code><span class="prompt">$</span> curl -fsSL https://www.dytes.cn/install.sh | sh
 
-<span class="prompt">$</span> mkdir -p piksel &amp;&amp; cd piksel
-<span class="prompt">$</span> curl -fsSL https://raw.githubusercontent.com/dytescn/Piksel/main/dytes.json -o dytes.json
-
-<span class="prompt">$</span> dytes update --gui</code></pre>
+<span class="prompt">$</span> dytes install piksel --gui</code></pre>
           <div class="terminal-head terminal-head-second">Windows PowerShell</div>
           <pre><code><span class="prompt">&gt;</span> irm https://www.dytes.cn/install.ps1 | iex
-<span class="prompt">&gt;</span> mkdir piksel; cd piksel
-<span class="prompt">&gt;</span> irm https://raw.githubusercontent.com/dytescn/Piksel/main/dytes.json -OutFile dytes.json
-<span class="prompt">&gt;</span> dytes update --gui</code></pre>
+<span class="prompt">&gt;</span> dytes install piksel --gui</code></pre>
         </div>
       </div>
     </section>
