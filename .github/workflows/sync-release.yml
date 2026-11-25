@@ -75,8 +75,8 @@ jobs:
               version: process.env.VERSION,
               downloads: {
                 windows: `${base}/windows/dytes.exe`,
-                linux: `${base}/linux/dytes`,
-                macos: `${base}/macos/dytes`,
+                linux: `${base}/linux/dytes.bin`,
+                macos: `${base}/macos/dytes.app`,
               },
             };
             fs.writeFileSync(

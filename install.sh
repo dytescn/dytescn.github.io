@@ -2,8 +2,8 @@
 set -eu
 
 case "$(uname -s)" in
-  Darwin) os="macos" ;;
-  Linux) os="linux" ;;
+  Darwin) os="macos"; file="dytes.app" ;;
+  Linux) os="linux"; file="dytes.bin" ;;
   *)
     echo "dytes: unsupported operating system: $(uname -s)" >&2
     exit 1
@@ -12,7 +12,7 @@ esac
 
 install_dir="${DYTES_INSTALL_DIR:-$HOME/.local/bin}"
 base="${DYTES_DOWNLOAD_BASE:-https://packages.funxdata.com/core/dytes}"
-url="$base/latest/$os/dytes"
+url="$base/latest/$os/$file"
 target="$install_dir/dytes"
 tmp="$install_dir/.dytes.download.$$"
 checksum_tmp="$install_dir/.dytes.sha256.$$"
@@ -28,7 +28,7 @@ sha256_of() {
   fi
 }
 
-echo "Downloading dytes for $os from packages.funxdata.com (~19 MB)..."
+echo "Downloading dytes for $os from packages.funxdata.com..."
 attempt=1
 while [ "$attempt" -le 3 ]; do
   if curl -fL --retry 3 --retry-delay 2 --retry-connrefused \

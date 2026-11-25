@@ -10,7 +10,7 @@ $checksum = "$target.download.sha256"
 New-Item -ItemType Directory -Force -Path $installDir | Out-Null
 
 try {
-    Write-Host "Downloading dytes for windows from packages.funxdata.com (~19 MB)..."
+    Write-Host "Downloading dytes for windows from packages.funxdata.com..."
     $downloaded = $false
     for ($attempt = 1; $attempt -le 3; $attempt++) {
         try {
