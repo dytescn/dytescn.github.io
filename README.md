@@ -1,6 +1,6 @@
 # dytescn.github.io
 
-dytescn 官方主页源码。
+dytescn 官方主页源码 —— **dytes：极简的设计包管理工具**。
 
 - 线上地址：https://www.dytes.cn
 - GitHub 组织：https://github.com/dytescn
@@ -54,9 +54,39 @@ DNS：
 www.dytes.cn  CNAME  dytescn.github.io
 ```
 
+## 安装与升级
+
+首次安装（macOS / Linux）：
+
+```bash
+curl -fsSL https://www.dytes.cn/install.sh | sh
+```
+
+Windows PowerShell：
+
+```powershell
+irm https://www.dytes.cn/install.ps1 | iex
+```
+
+已经安装 dytes 时，安装或升级到最新版：
+
+```bash
+dytes self-update
+```
+
+安装 Piksel（0.2.25 起 `dytes install` 默认安装 core 包 `piksel`）：先进入目标目录，再执行：
+
+```bash
+mkdir -p Piksel && cd Piksel
+dytes install
+```
+
+需要图形界面选择安装目录时使用 `dytes install --gui`。
+
 ## 版本同步与下载源
 
-- 下载源：`https://packages.funxdata.com/core/dytes/latest/<platform>/`
+- 下载源：`https://packages.funxdata.com/core/dytes/latest/<platform>/<file>`，
+  其中 `<file>` 为 `dytes.exe`（Windows）、`dytes.bin`（Linux）、`dytes.app`（macOS）；
 - 版本信息（运行时）：
   - 首页加载 `https://packages.funxdata.com/core/dytes/latest/version.js`，
     由 `dytes` release workflow 在发布时生成；
