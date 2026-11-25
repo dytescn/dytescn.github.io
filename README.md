@@ -74,14 +74,13 @@ irm https://www.dytes.cn/install.ps1 | iex
 dytes self-update
 ```
 
-安装 Piksel（0.2.25 起 `dytes install` 默认安装 core 包 `piksel`）：先进入目标目录，再执行：
+安装 Piksel（0.2.25 起 `dytes install` 默认安装 core 包 `piksel`）：
 
 ```bash
-mkdir -p Piksel && cd Piksel
-dytes install
+dytes install core piksel --gui
 ```
 
-需要图形界面选择安装目录时使用 `dytes install --gui`。
+图形安装器会让你选择安装目录。
 
 ## 版本同步与下载源
 
